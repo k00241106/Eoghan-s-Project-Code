@@ -1,6 +1,6 @@
 <%-- 
     Document   : HomePage
-    Created on : 09-Dec-2020, 13:04:38
+    Created on : 13-Nov-2020, 09:38:45
     Author     : Eoghan
 --%>
 
@@ -19,18 +19,11 @@
     
    
     <form action="GeneralUserServlet" method="GET">
-         <input type="hidden" name="action" value="RequestAllGeneralUsers">
+         <input type="hidden" name="action" value="RequestAllGeneralUser">
          <input type="submit" value="General Users" >
          <br>
          
     </form>
-    
-<!--    <form action="MemberServlet" method="GET">
-         <input type="hidden" name="action" value="RequestAllMembers">
-         <input type="submit" value="Members" >
-         <br>
-         
-    </form>-->
     
     <c:out value="${message}" />
 </html>

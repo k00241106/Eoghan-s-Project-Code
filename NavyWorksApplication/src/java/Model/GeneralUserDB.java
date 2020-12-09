@@ -210,4 +210,38 @@ public class GeneralUserDB {
         return allGeneralUsers;
     }
 
+    public GeneralUser findGeneralUserByID(int generalUserID) {
+
+        GeneralUser generalUser = null;
+        System.out.println(" find all general user's by ID");
+        Connection c = DatabaseHelper.getConnection();
+
+        String template = "SELECT * FROM GeneralUser where GeneralUserID = ?";
+
+        if (c != null) {
+            try {
+                PreparedStatement inserter = c.prepareStatement(template);
+                inserter.setInt(1, generalUserID);
+                ResultSet resultSet = inserter.executeQuery();
+                System.out.println(inserter);
+                while (resultSet.next()) {
+                    generalUser = new GeneralUser();
+                    generalUser.setGeneralUserID(resultSet.getInt("GeneralUserID"));
+                    generalUser.setUsername(resultSet.getString("Username"));
+                    generalUser.setFirstName(resultSet.getString("FirstName"));
+                    generalUser.setSurName(resultSet.getString("Surname"));
+                    generalUser.setEmail(resultSet.getString("Email"));
+                    generalUser.setPassword(resultSet.getString("Password"));
+
+                }
+                inserter.close();
+                c.close();
+            } catch (SQLException ex) {
+                System.out.println("Error on find all " + ex);
+            }
+
+        }
+        return generalUser;
+    }
+
 }

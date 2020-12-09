@@ -107,12 +107,17 @@ public class GeneralUser {
         GeneralUserDB generalUserdb = new GeneralUserDB();
         return generalUserdb.deleteGeneralUserByID(generalUserID);
     }
-    
+
     public ArrayList<GeneralUser> findAllGeneralUsers() {
 
         GeneralUserDB generalUserdb = new GeneralUserDB();
         return generalUserdb.findAllGeneralUsers();
 
+    }
+
+    public GeneralUser findGeneralUserByID(int generalUserID) {
+        GeneralUserDB generalUser = new GeneralUserDB();
+        return generalUser.findGeneralUserByID(generalUserID);
     }
 
     public void print() {

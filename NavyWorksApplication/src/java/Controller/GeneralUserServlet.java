@@ -125,45 +125,110 @@ public class GeneralUserServlet extends HttpServlet {
         }
         return null;
     }
-    
+
     private String processAddGeneralUser(HttpServletRequest request, HttpSession session, List<FileItem> items) throws NumberFormatException {
         //debud info
         System.out.println("In processAddGeneralUser");
-        //get information from the user - isbn, author price title
+        System.out.println("Again!");
 
         //add detail are coming form a multipart form
         String generalUserIDString = this.getFormData(items, "generalUserID");
-        String username = this.getFormData(items, "isbn");
-        String firstName = this.getFormData(items, "title");
-        String surName = this.getFormData(items, "author");
-        String email = this.getFormData(items, "price");
-        String password = this.getFormData(items, "password");
-        
-        System.out.println("just defor crash");
+        System.out.println("Now!");
+        //Make generalUserID an int
+        System.out.println("Now 2!");
         int generalUserID = Integer.parseInt(generalUserIDString);
+        
+        String username = this.getFormData(items, "username");
+        String firstName = this.getFormData(items, "firstName");
+        String surName = this.getFormData(items, "surName");
+        String email = this.getFormData(items, "email");
+        String password = this.getFormData(items, "password");
 
+        System.out.println("just defor crash");
         GeneralUser g = new GeneralUser(generalUserID, username, firstName, surName, email, password);
-
+        System.out.println("Contructor created");
+        
         if (g.createGeneralUser()) {
             //send the user a message to say it was added-> view
-            String message = "General User " + g.getUsername()+ " was added to the system.";
+            String message = "General User " + g.getUsername() + " was added to the system.";
             request.setAttribute("message", message);
-            //display the page again - need a new list to reflect deleted book
-            return this.processRequestAllBooks(session);
-
+            //display the page again - need a new list to reflect deleted general
+            System.out.println("About to return");
+            return this.processRequestAllGeneralUsers(session);
         }
         return null;
     }
-    
+
     private String processRequestAllGeneralUsers(HttpSession session) {
         String nextPage;
         System.out.println("in display all General Users");
         ArrayList<GeneralUser> allGeneralUsersList = new ArrayList<>();
         GeneralUser g1 = new GeneralUser();
         allGeneralUsersList = g1.findAllGeneralUsers();
-        session.setAttribute("AllBooks", allGeneralUsersList);
+        session.setAttribute("AllGeneralUsers", allGeneralUsersList);
         nextPage = "/DisplayAllGeneralUsers.jsp";
         return nextPage;
+    }
+
+    private String processGetGeneralUserDetailsByID(HttpServletRequest request, HttpSession session) throws NumberFormatException {
+        String nextPage;
+        System.out.println("Edit General User");
+        //get general details
+        GeneralUser generalUserDetails = new GeneralUser();
+        //get generalID from request
+        String generalUserIDString = (String) request.getParameter("generalUserID");
+        System.out.println("Edit general user for generalUserID =" + generalUserIDString);
+        int generalUserID = Integer.parseInt(generalUserIDString);
+        generalUserDetails = generalUserDetails.findGeneralUserByID(generalUserID);
+        generalUserDetails.print();
+        session.setAttribute("GeneralUser", generalUserDetails);
+        nextPage = "/UpdateGeneralUser.jsp";
+        return nextPage;
+    }
+
+    private String processDeleteGeneralUser(HttpServletRequest request, HttpSession session) {
+        String nextPage;
+        System.out.println("Delete generalUser");
+        //get general details
+        GeneralUser generalUserDetails = new GeneralUser();
+        //get generalUserID from request
+        String generalUserIDString = (String) request.getParameter("generalUserID");
+        int generalUserID = Integer.parseInt(generalUserIDString);
+        System.out.println("delete general user for generalUserID =" + generalUserID);
+        generalUserDetails.deleteGeneralUserByID(generalUserID);
+        //display the page again - need a new list to reflect deleted general User
+        return this.processRequestAllGeneralUsers(session);
+    }
+
+    private String processSaveGeneralUser(HttpServletRequest request, HttpSession session, List<FileItem> items) throws NumberFormatException {
+        String nextPage;
+        System.out.println("Save generaluser");
+        //get general user details 
+        //get new general user details from request
+        //get information from the user - id, 
+
+        //add detail are coming form a multipart form
+        String generalUserIDString = this.getFormData(items, "generalUserID");
+        String username = this.getFormData(items, "username");
+        String firstName = this.getFormData(items, "firstName");
+        String surName = this.getFormData(items, "surName");
+        String email = this.getFormData(items, "email");
+        String password = this.getFormData(items, "password");
+
+        //convert generaluserID to int
+        int generalUserID = Integer.parseInt(generalUserIDString);
+
+        //get the geenral user details
+        GeneralUser generalUserDetails = new GeneralUser(generalUserID, username, firstName, surName, email, password);
+        String message = null;
+        if (generalUserDetails.updateGeneralUser()) {
+            message = "General User updated";
+        } else {
+            message = "Error on General User updated";
+        }
+        request.setAttribute("message", message);
+        //display the page again - need a new list to reflect deleted general user
+        return this.processRequestAllGeneralUsers(session);
     }
 
     private void gotoPage(String url, HttpServletRequest request, HttpServletResponse response)
