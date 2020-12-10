@@ -15,7 +15,7 @@ import sun.security.util.Password;
  */
 public class GeneralUser implements Serializable{
 
-    private int generalUserID;
+    private String generalUserID;
     private String username;
     private String firstName;
     private String surName;
@@ -33,7 +33,7 @@ public class GeneralUser implements Serializable{
         this.password = password;
     }
 
-    public GeneralUser(int generalUserID, String username, String firstName, String surName, String email, String password) {
+    public GeneralUser(String generalUserID, String username, String firstName, String surName, String email, String password) {
         this.generalUserID = generalUserID;
         this.username = username;
         this.firstName = firstName;
@@ -42,11 +42,11 @@ public class GeneralUser implements Serializable{
         this.password = password;
     }
 
-    public int getGeneralUserID() {
+    public String getGeneralUserID() {
         return generalUserID;
     }
 
-    public void setGeneralUserID(int generalUserID) {
+    public void setGeneralUserID(String generalUserID) {
         this.generalUserID = generalUserID;
     }
 
@@ -103,7 +103,7 @@ public class GeneralUser implements Serializable{
         return generalUserdb.updateGeneralUser();
     }
 
-    public boolean deleteGeneralUserByID(int generalUserID) {
+    public boolean deleteGeneralUserByID(String generalUserID) {
 
         GeneralUserDB generalUserdb = new GeneralUserDB();
         return generalUserdb.deleteGeneralUserByID(generalUserID);

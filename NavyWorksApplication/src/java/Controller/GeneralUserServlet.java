@@ -129,32 +129,25 @@ public class GeneralUserServlet extends HttpServlet {
     private String processAddGeneralUser(HttpServletRequest request, HttpSession session, List<FileItem> items) throws NumberFormatException {
         //debud info
         System.out.println("In processAddGeneralUser");
-        System.out.println("Again!");
+        //get information from the user - isbn, author price title
 
         //add detail are coming form a multipart form
-        String generalUserIDString = this.getFormData(items, "generalUserID");
-        System.out.println("Now!");
-        //Make generalUserID an int
-        System.out.println("Now 2!");
-        
-        int generalUserID = Integer.parseInt(generalUserIDString);
-        System.out.println("Now 3!");
+        String generalUserID = this.getFormData(items, "generalUserID");
         String username = this.getFormData(items, "username");
         String firstName = this.getFormData(items, "firstName");
         String surName = this.getFormData(items, "surName");
         String email = this.getFormData(items, "email");
         String password = this.getFormData(items, "password");
-
+        //make price a double
         System.out.println("just defor crash");
+
         GeneralUser g = new GeneralUser(generalUserID, username, firstName, surName, email, password);
-        System.out.println("Contructor created");
-        
+
         if (g.createGeneralUser()) {
             //send the user a message to say it was added-> view
             String message = "General User " + g.getUsername() + " was added to the system.";
             request.setAttribute("message", message);
-            //display the page again - need a new list to reflect deleted general
-            System.out.println("About to return");
+            //display the page again - need a new list to reflect deleted General User
             return this.processRequestAllGeneralUsers(session);
         }
         return null;
@@ -194,41 +187,39 @@ public class GeneralUserServlet extends HttpServlet {
         GeneralUser generalUserDetails = new GeneralUser();
         //get generalUserID from request
         String generalUserIDString = (String) request.getParameter("generalUserID");
-        int generalUserID = Integer.parseInt(generalUserIDString);
-        System.out.println("delete general user for generalUserID =" + generalUserID);
-        generalUserDetails.deleteGeneralUserByID(generalUserID);
+        //int generalUserID = Integer.parseInt(generalUserIDString);
+        System.out.println("delete general user for generalUserID =" + generalUserIDString);
+        generalUserDetails.deleteGeneralUserByID(generalUserIDString);
         //display the page again - need a new list to reflect deleted general User
         return this.processRequestAllGeneralUsers(session);
     }
 
     private String processSaveGeneralUser(HttpServletRequest request, HttpSession session, List<FileItem> items) throws NumberFormatException {
         String nextPage;
-        System.out.println("Save generaluser");
-        //get general user details 
-        //get new general user details from request
-        //get information from the user - id, 
+        System.out.println("Save GeneralUser");
+        System.out.println("PLEASE");
+        //get book details 
+        //get new book details from request
+        //get information from the user - isbn, author price title
 
         //add detail are coming form a multipart form
-        String generalUserIDString = this.getFormData(items, "generalUserID");
+        String generalUserID = this.getFormData(items, "generalUserID");
         String username = this.getFormData(items, "username");
         String firstName = this.getFormData(items, "firstName");
         String surName = this.getFormData(items, "surName");
         String email = this.getFormData(items, "email");
         String password = this.getFormData(items, "password");
 
-        //convert generaluserID to int
-        int generalUserID = Integer.parseInt(generalUserIDString);
-
-        //get the geenral user details
+        //get the image for the book 2 parts filename and the upload file to the server
         GeneralUser generalUserDetails = new GeneralUser(generalUserID, username, firstName, surName, email, password);
         String message = null;
         if (generalUserDetails.updateGeneralUser()) {
             message = "General User updated";
         } else {
-            message = "Error on General User updated";
+            message = "Error on general updated";
         }
         request.setAttribute("message", message);
-        //display the page again - need a new list to reflect deleted general user
+        //display the page again - need a new list to reflect deleted book
         return this.processRequestAllGeneralUsers(session);
     }
 

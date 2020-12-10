@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class GeneralUserDB {
 
-    private int generalUserID;
+    private String generalUserID;
     private String username;
     private String firstName;
     private String surName;
@@ -35,7 +35,7 @@ public class GeneralUserDB {
         this.password = password;
     }
 
-    public GeneralUserDB(int generalUserID, String username, String firstName, String surName, String email, String password) {
+    public GeneralUserDB(String generalUserID, String username, String firstName, String surName, String email, String password) {
         this.generalUserID = generalUserID;
         this.username = username;
         this.firstName = firstName;
@@ -44,11 +44,11 @@ public class GeneralUserDB {
         this.password = password;
     }
 
-    public int getGeneralUserID() {
+    public String getGeneralUserID() {
         return generalUserID;
     }
 
-    public void setGeneralUserID(int generalUserID) {
+    public void setGeneralUserID(String generalUserID) {
         this.generalUserID = generalUserID;
     }
 
@@ -133,13 +133,13 @@ public class GeneralUserDB {
         if (c != null) {
             try {
                 PreparedStatement inserter = c.prepareStatement(template);
+                
                 inserter.setString(1, this.username);
                 inserter.setString(2, this.firstName);
                 inserter.setString(3, this.surName);
                 inserter.setString(4, this.email);
                 inserter.setString(5, this.password);
-                inserter.setInt(6, this.generalUserID);
-
+                inserter.setString(6, this.generalUserID);
                 System.out.println(inserter);
                 int i = inserter.executeUpdate();
                 return true;
@@ -152,7 +152,7 @@ public class GeneralUserDB {
         return true;
     }
 
-    public boolean deleteGeneralUserByID(int generalUserID) {
+    public boolean deleteGeneralUserByID(String generalUserID) {
         //   boolean inserted = false;
 
         Connection c = DatabaseHelper.getConnection();
@@ -160,7 +160,7 @@ public class GeneralUserDB {
         if (c != null) {
             try {
                 PreparedStatement inserter = c.prepareStatement(template);
-                inserter.setInt(1, generalUserID);
+                inserter.setString(1, generalUserID);
                 int i = inserter.executeUpdate();
                 return true;
             } catch (SQLException ex) {
@@ -174,8 +174,8 @@ public class GeneralUserDB {
 
     public ArrayList<GeneralUser> findAllGeneralUsers() {
 
-        System.out.println(" find all General Users");
-        ArrayList<GeneralUser> allGeneralUsers = new ArrayList<GeneralUser>();
+        System.out.println(" find all general users");
+        ArrayList<GeneralUser> allGeneralUsers = new ArrayList<>();
 
         Connection c = DatabaseHelper.getConnection();
 
@@ -188,7 +188,7 @@ public class GeneralUserDB {
 
                 while (resultSet.next()) {
                     GeneralUser g = new GeneralUser();
-                    g.setGeneralUserID(resultSet.getInt("GeneralUserID"));
+                    g.setGeneralUserID(resultSet.getString("GeneralUserID"));
                     g.setUsername(resultSet.getString("Username"));
                     g.setFirstName(resultSet.getString("FirstName"));
                     g.setSurName(resultSet.getString("Surname"));
@@ -196,7 +196,6 @@ public class GeneralUserDB {
                     g.setPassword(resultSet.getString("Password"));
 
                     allGeneralUsers.add(g);
-
                 }
 
                 System.out.println(inserter);
@@ -213,7 +212,7 @@ public class GeneralUserDB {
     public GeneralUser findGeneralUserByID(int generalUserID) {
 
         GeneralUser generalUser = null;
-        System.out.println(" find all general user's by ID");
+        System.out.println(" find all General Users by ID");
         Connection c = DatabaseHelper.getConnection();
 
         String template = "SELECT * FROM GeneralUser where GeneralUserID = ?";
@@ -226,13 +225,12 @@ public class GeneralUserDB {
                 System.out.println(inserter);
                 while (resultSet.next()) {
                     generalUser = new GeneralUser();
-                    generalUser.setGeneralUserID(resultSet.getInt("GeneralUserID"));
+                    generalUser.setGeneralUserID(resultSet.getString("GeneralUserID"));
                     generalUser.setUsername(resultSet.getString("Username"));
                     generalUser.setFirstName(resultSet.getString("FirstName"));
                     generalUser.setSurName(resultSet.getString("Surname"));
                     generalUser.setEmail(resultSet.getString("Email"));
                     generalUser.setPassword(resultSet.getString("Password"));
-
                 }
                 inserter.close();
                 c.close();
