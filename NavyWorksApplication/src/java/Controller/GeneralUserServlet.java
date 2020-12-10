@@ -136,8 +136,9 @@ public class GeneralUserServlet extends HttpServlet {
         System.out.println("Now!");
         //Make generalUserID an int
         System.out.println("Now 2!");
-        int generalUserID = Integer.parseInt(generalUserIDString);
         
+        int generalUserID = Integer.parseInt(generalUserIDString);
+        System.out.println("Now 3!");
         String username = this.getFormData(items, "username");
         String firstName = this.getFormData(items, "firstName");
         String surName = this.getFormData(items, "surName");

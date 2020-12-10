@@ -5,6 +5,7 @@
  */
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import sun.security.util.Password;
 
@@ -12,7 +13,7 @@ import sun.security.util.Password;
  *
  * @author Eoghan
  */
-public class GeneralUser {
+public class GeneralUser implements Serializable{
 
     private int generalUserID;
     private String username;
